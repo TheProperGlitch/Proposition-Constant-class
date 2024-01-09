@@ -18,11 +18,7 @@ public class PropositionConstant {
     }
 
     public boolean equals(PropositionConstant other){
-     if ( (this.value && other.value) || ((!this.value)&&(!other.value))){
-        return true;
-     } else {
-        return false;
+        return this.value == other.value;
      }
 }
 
-}
