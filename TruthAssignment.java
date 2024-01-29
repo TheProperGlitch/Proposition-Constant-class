@@ -8,7 +8,7 @@ public class TruthAssignment{
     public boolean findTruth(PropositionConstant searchFor){
         int pPosition = -1;
         for (int i = 0; i < pConstants.length ; i++){
-            if(pConstants[i] == searchFor){
+            if(pConstants[i].getName().equals(searchFor.getName()) && pConstants[i].equals(searchFor)){
                 pPosition = i;
             }
         }

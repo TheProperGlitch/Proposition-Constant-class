@@ -20,5 +20,13 @@ public class PropositionConstant {
     public boolean equals(PropositionConstant other){
         return this.value == other.value;
      }
+    
+     public String getName(){
+       return name; 
+     }
+
+     public boolean getValue(){
+        return value;
+     }
 }
 

@@ -60,6 +60,9 @@ public class Main {
             testsFailed++;
         }
         System.out.println("TESTING FOR PropositionConstant DONE. \nTOTAL TESTS: 7\nFAILURES: " + testsFailed);
+
+
+
         totalTestsFailed = testsFailed;
         testsFailed = 0;
         System.out.println("TEST CODE FOR TruthAssignment:");
@@ -72,7 +75,7 @@ public class Main {
         System.out.println("TEST 1: THE findTruth METHOD FOR TruthAssignment RETURNS THE INTENDED RESULT FOR THE FIRST \nPropositionConstant IN THE LIST");
         if (!test.findTruth(one)){
             System.out.println("TEST PASSED");
-        }else {
+        }else { 
             System.out.println("TEST FAILED");
             testsFailed++;
         }
@@ -84,8 +87,93 @@ public class Main {
             testsFailed++;
         }
         System.out.println("TESTING FOR TruthAssignment DONE. \nTOTAL TESTS: 2\nFAILURES: " + testsFailed);
-        totalTestsFailed+= testsFailed;
 
-        System.out.println("ALL TESTING DONE. RESULTS: \nTESTS DONE: 9\nTESTS FAILED: " + testsFailed);
+
+
+
+        totalTestsFailed+= testsFailed;
+        testsFailed = 0;
+        System.out.println("TEST CODE FOR LogicalSentence:");
+        System.out.println("TEST 1: MAKING A LogicalSentence WITHOUT ANY TILDES MAKES A PropositionConstant");
+        LogicalSentence a = new LogicalSentence("p");
+        if(a.getProp().getName().equals("p")){
+            System.out.println("TEST PASSED");
+        }else {
+            System.out.println("TEST FAILED");
+            testsFailed++;
+        }
+        System.out.println("TEST 2: MAKING A LogicalSentence WITHOUT ANY TILDES MAKES NEGATION FALSE");
+        if(!a.getNegation()){
+            System.out.println("TEST PASSED");
+        }else {
+            System.out.println("TEST FAILED");
+            testsFailed++;
+        }
+        
+        System.out.println("TEST 3: THE EVALUATE METHOD WORKS AS EXPECTED 1/4");
+        PropositionConstant test3Constant = new PropositionConstant("p", false);
+        PropositionConstant[] test3List = {test3Constant};
+        boolean[] test3booleans = {false};
+        TruthAssignment test3Assignment = new TruthAssignment(test3List, test3booleans);
+        if(!a.evaluate(test3Assignment)){
+            System.out.println("TEST PASSED");
+        }else {
+            System.out.println("TEST FAILED");
+            testsFailed++;
+        }
+
+
+        System.out.println("TEST 4: THE EVALUATE METHOD WORKS AS EXPECTED 2/4");
+        boolean[] test4booleans = {true};
+        test3Assignment = new TruthAssignment(test3List, test4booleans);
+        if(a.evaluate(test3Assignment)){
+            System.out.println("TEST PASSED");
+        }else {
+            System.out.println("TEST FAILED");
+            testsFailed++;
+        }
+
+        LogicalSentence b = new LogicalSentence("~p");
+
+        System.out.println("TEST 5: MAKING A LogicalSentence WITH TILDES MAKES A LogicalSentence");
+        if(b.getLogic().getProp().getName().equals("p")){
+            System.out.println("TEST PASSED");
+        }else {
+            System.out.println("TEST FAILED");
+            testsFailed++;
+        }
+
+        System.out.println("TEST 6: MAKING A LogicalSentence WITH TILDES MAKES NEGATION TRUE");
+        if(b.getNegation()){
+            System.out.println("TEST PASSED");
+        }else {
+            System.out.println("TEST FAILED");
+            testsFailed++;
+        }
+
+        System.out.println("TEST 7: THE EVALUATE METHOD WORKS AS EXPECTED 3/4");
+        test3Assignment = new TruthAssignment(test3List, test3booleans);
+        if(b.evaluate(test3Assignment)){
+            System.out.println("TEST PASSED");
+        }else {
+            System.out.println("TEST FAILED");
+            testsFailed++;
+        }
+
+        System.out.println("TEST 8: THE EVALUATE METHOD WORKS AS EXPECTED 4/4");
+        test3Assignment = new TruthAssignment(test3List, test4booleans);
+        if(!b.evaluate(test3Assignment)){
+            System.out.println("TEST PASSED");
+        }else {
+            System.out.println("TEST FAILED");
+            testsFailed++;
+        }
+
+        System.out.println("TESTING FOR PropositionConstant DONE. \nTOTAL TESTS: 8\nFAILURES: " + testsFailed);
+        totalTestsFailed+= testsFailed;
+        testsFailed = 0;
+
+        
+        System.out.println("ALL TESTING DONE. RESULTS: \nTESTS DONE: 17\nTESTS FAILED: " + totalTestsFailed);
     }
 } 
