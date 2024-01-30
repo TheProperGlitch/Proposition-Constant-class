@@ -1,5 +1,3 @@
-import java.util.Objects;
-
 public class PropositionConstant {
     private String name;
     private boolean value;

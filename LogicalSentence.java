@@ -25,12 +25,11 @@ public class LogicalSentence {
         }
     }
 
+    //This verson of evaluate is so that a LogicalSentence created in another logical sentence will have the negation value of the outside LogicalSentence
     boolean evaluate(TruthAssignment truth, boolean nBoolean){
         if (!(logic == null)){
             return logic.evaluate(truth, nBoolean);
         }else{
-        //Input: TruthAssignment
-        //Output: A boolean which is the value for prop in the TruthAssignment
         return !(truth.findTruth(prop) && nBoolean) && (truth.findTruth(prop) || nBoolean);
         }
     }
