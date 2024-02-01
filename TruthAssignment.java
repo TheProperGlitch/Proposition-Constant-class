@@ -1,17 +1,21 @@
+import java.util.ArrayList;
+
 public class TruthAssignment{
-    private PropositionConstant[] pConstants;
-    private boolean[] bConstants;
-    public TruthAssignment(PropositionConstant[] pInput, boolean[] bInput){
+    private ArrayList<PropositionConstant> pConstants;
+    private ArrayList<Boolean> bConstants;
+    public TruthAssignment(ArrayList<PropositionConstant> pInput, ArrayList<Boolean> bInput){
         pConstants = pInput;
         bConstants = bInput;
     }
+    
     public boolean findTruth(PropositionConstant searchFor){
         int pPosition = -1;
-        for (int i = 0; i < pConstants.length ; i++){
-            if(pConstants[i].getName().equals(searchFor.getName()) && pConstants[i].equals(searchFor)){
+        for (int i = 0; i < pConstants.size() ; i++){
+            if(pConstants.get(i).equals(searchFor)){
                 pPosition = i;
             }
         }
-        return bConstants[pPosition];
+        return bConstants.get(pPosition);
     }
+    
 }

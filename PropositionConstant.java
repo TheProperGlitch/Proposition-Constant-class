@@ -1,30 +1,23 @@
 public class PropositionConstant {
     private String name;
-    private boolean value;
-    public PropositionConstant(String name, Boolean value){
+    public PropositionConstant(String name){
         this.name=name;
-        this.value=value;
     }
 
     public String toString(){
-        String retval = "The proposition constant named " + name + " has a truth value of "+ value + ".";
+        String retval = "The proposition constant named "+ name +".";
         return retval;
     }
 
-    public void toggle(){
-        value = !value;
-    }
-
     public boolean equals(PropositionConstant other){
-        return this.value == other.value;
+        return this.name.equals(other.name);
      }
+
+     //The following code is only for testing
     
      public String getName(){
        return name; 
      }
 
-     public boolean getValue(){
-        return value;
-     }
 }
 

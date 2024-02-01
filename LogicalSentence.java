@@ -2,37 +2,71 @@ public class LogicalSentence {
     private PropositionConstant prop;
     private LogicalSentence logic;
     private boolean negation = false;
+    private String operation;
+    private LogicalSentence x;
+    private LogicalSentence y;
 
     //Constructor
     LogicalSentence(String str){
         //Input: String
         //Effect: Defines prop, logic, or/and negation
         if(!str.startsWith("~")){
-            prop = new PropositionConstant(str, false);
+            prop = new PropositionConstant(str);
         } else if (str.startsWith("~")) {
             negation = true;
             logic = new LogicalSentence(str.substring(1));
         }
     }
 
-    boolean evaluate(TruthAssignment truth){
-        if (!(logic == null)){
-            return logic.evaluate(truth, negation);
-        }else{
-        //Input: TruthAssignment
-        //Output: A boolean which is the value for prop in the TruthAssignment
-        return !(truth.findTruth(prop) && negation) && (truth.findTruth(prop) || negation);
+    LogicalSentence(boolean negated, LogicalSentence a, LogicalSentence b, String op){
+        if(negated){
+            negation = true;
+            if(a == null){
+                logic = b;
+            } else {
+                logic = a;
+            }
+        } else {
+        operation = op;
+        x = a;
+        y = b;
         }
     }
 
-    //This verson of evaluate is so that a LogicalSentence created in another logical sentence will have the negation value of the outside LogicalSentence
-    boolean evaluate(TruthAssignment truth, boolean nBoolean){
-        if (!(logic == null)){
-            return logic.evaluate(truth, nBoolean);
-        }else{
-        return !(truth.findTruth(prop) && nBoolean) && (truth.findTruth(prop) || nBoolean);
+    boolean evaluate(TruthAssignment truth){
+        boolean baseValue;
+        if (!(operation == null || operation.equals(""))){
+            if (operation.equals("&")){
+                baseValue = x.evaluate(truth) && y.evaluate(truth);
+            } else if (operation.equals("|")){
+                baseValue = x.evaluate(truth) || y.evaluate(truth);
+            } else if (operation.equals("<=>")){
+                if(x.evaluate(truth)){
+                    baseValue = y.evaluate(truth);
+                } else {
+                    baseValue = !y.evaluate(truth);
+                }
+            } else if (operation.equals("=>")){
+                baseValue = !x.evaluate(truth) || y.evaluate(truth);
+            } else {
+                System.out.println("ERROR");
+                baseValue = false;
+            }
+        } else {
+            if (!(logic == null)){
+            baseValue = logic.evaluate(truth);
+            } else {
+                baseValue = truth.findTruth(prop);
+            }
+        }
+        //Applying the operator to the inital value
+        if (negation){
+            return !baseValue;
+        } else {
+            return baseValue;
         }
     }
+
 
     //These methods are just to make testing easy
     PropositionConstant getProp(){
