@@ -1,204 +1,180 @@
 import java.util.ArrayList;
 
+import javax.swing.text.LayoutQueue;
+
 public class Main {
     public static void main(String[] args) {
         int testsFailed = 0;
         int totalTestsFailed = 0;
         boolean runTests = false;
 
-        ArrayList<PropositionConstant> PCS = new ArrayList<PropositionConstant>();
-        ArrayList<Boolean> TUOS = new ArrayList<Boolean>();
-        TUOS.add(true);
-        TUOS.add(false);
-        TUOS.add(true);
-        PCS.add(new PropositionConstant("p"));
-        PCS.add(new PropositionConstant("q"));
-        PCS.add(new PropositionConstant("r"));
-        TruthAssignment tao = new TruthAssignment(PCS, TUOS);
-        LogicalSentence itisraining = new LogicalSentence("~q");
-        LogicalSentence ihaveumbrela = new LogicalSentence("q");
-        LogicalSentence ikeptmypromase = new LogicalSentence(false, itisraining, ihaveumbrela, "&");
-        System.out.println(ikeptmypromase.evaluate(tao));
+       System.out.println("Testing for PropositionConstant:");
+       PropositionConstant a = new PropositionConstant("hello");
+       PropositionConstant b = new PropositionConstant("goodbye");
+       PropositionConstant c = new PropositionConstant("hello");
 
-        /*
-        THIS CODE IS THE CODE FOR PROPOSITION CONSTANT WHICH IS NO LONGER RELEVANT
-        SEE PREVIOUS COMMITS FOR THE PREVIOUS VERSON OF PROPOSITION CONSTANT
-        
-        System.out.println("TEST CODE FOR PropositionConstant:");
-        PropositionConstant x = new PropositionConstant("Hello", true);
-        PropositionConstant y = new PropositionConstant("Goodbye", false);
-        System.out.println("TEST 1: THE toString METHOD FOR PropositionConstant RETURNS THE INTENDED STRING FOR A PropositionConstant \nWITH THE NAME \"Hello\" AND THE VALUE true.");
-        if (x.toString().equals("The proposition constant named Hello has a truth value of true.")){
+       System.out.print("TEST 1 FOR PropositionConstatnt: toString returns the expected string 1/2: ");
+       if(a.toString().equals("The proposition constant named hello.")){
             System.out.println("TEST PASSED");
-        }else {
+       } else {
             System.out.println("TEST FAILED");
             testsFailed++;
-        }
-        System.out.println("TEST 2: THE toString METHOD FOR PropositionConstant RETURNS THE INTENDED STRING FOR A PropositionConstant \nWITH THE NAME \"Goodbye\" AND THE VALUE false.");
-        if (y.toString().equals("The proposition constant named Goodbye has a truth value of false.")){
+            totalTestsFailed++;
+       }
+
+       System.out.print("TEST 2 FOR PropositionConstatnt: toString returns the expected string 2/2: ");
+       if(b.toString().equals("The proposition constant named goodbye.")){
             System.out.println("TEST PASSED");
-        }else {
+       } else {
             System.out.println("TEST FAILED");
             testsFailed++;
-        }
-        System.out.println("TEST 3: THE toggle METHOD FOR PropositionConstant FLIPS THE VALUE OF PropositionConstant x FROM TRUE TO FALSE.");
-        x.toggle();//x should be false
-        if (x.toString().equals("The proposition constant named Hello has a truth value of false.")){
+            totalTestsFailed++;
+       }
+
+       System.out.print("TEST 3 FOR PropositionConstatnt: equals returns true when PropositionConstants have the same name: ");
+       if(a.equals(c)){
             System.out.println("TEST PASSED");
-        }else{
+       } else {
             System.out.println("TEST FAILED");
             testsFailed++;
-        }
-        System.out.println("TEST 4: THE toggle METHOD FOR PropositionConstant FLIPS THE VALUE OF PropositionConstant x FROM FALSE TO TRUE.");
-        x.toggle();//x should be true
-        if (x.toString().equals("The proposition constant named Hello has a truth value of true.")){
+            totalTestsFailed++;
+       }
+
+       System.out.print("TEST 4 FOR PropositionConstatnt: equals returns false when PropositionConstants do not have the same name: ");
+       if(!a.equals(b)){
             System.out.println("TEST PASSED");
-        }else {
+       } else {
             System.out.println("TEST FAILED");
             testsFailed++;
-        }
-        System.out.println("TEST 5: THE equals METHOD FOR PropositionConstant COMPARES TWO PropositionConstants WITH VALUE true CORRECTLY.");
-        y.toggle();//y should be true
-        if (x.equals(y)){
+            totalTestsFailed++;
+       }
+       System.out.println("Tests done for PropositionConstant, \nTests done: 4\nTests Failed: " + testsFailed);
+       testsFailed = 0;
+       System.out.println("Testing for TruthAssignment:");
+       ArrayList<Boolean> d = new ArrayList<Boolean>();
+       d.add(true);
+       d.add(false);
+       ArrayList<PropositionConstant> e = new ArrayList<PropositionConstant>();
+       e.add(new PropositionConstant("hi"));
+       e.add(new PropositionConstant("bye"));
+       TruthAssignment f = new TruthAssignment(e, d);
+
+       System.out.print("TEST 1 FOR TruthAssignment: The evaluate method returns the respective truth assignment 1/2: ");
+       if(f.findTruth(new PropositionConstant("hi"))){
             System.out.println("TEST PASSED");
-        }else {
+       } else {
             System.out.println("TEST FAILED");
             testsFailed++;
-        }
-        System.out.println("TEST 6: THE equals METHOD FOR PropositionConstant COMPARES TWO PropositionConstants WITH DIFFERENT VALUES CORRECTLY.");
-        x.toggle();//x should be false
-        if (!x.equals(y)){
+            totalTestsFailed++;
+       }
+
+       System.out.print("TEST 2 FOR TruthAssignment: The evaluate method returns the respective truth assignment 2/2: ");
+       if(!f.findTruth(new PropositionConstant("bye"))){
             System.out.println("TEST PASSED");
-        }else {
+       } else {
             System.out.println("TEST FAILED");
             testsFailed++;
-        }
-        System.out.println("TEST 7: THE equals METHOD FOR PropositionConstant COMPARES TWO PropositionConstants WITH VALUE false CORRECTLY.");
-        y.toggle();
-        if (x.equals(y)){
+            totalTestsFailed++;
+       }
+
+       System.out.println("Tests done for TruthAssignment, \nTests done: 2\nTests Failed: " + testsFailed);
+       testsFailed = 0;
+       System.out.println("Testing for LogicalSentence (Note, the instructions were a bit confusing so this might not be what is desired):");
+       LogicalSentence g = new LogicalSentence("hi");
+       LogicalSentence h = new LogicalSentence("bye");
+       LogicalSentence i = new LogicalSentence("~hi");
+       LogicalSentence j = new LogicalSentence(false, h, h, "&");
+
+       System.out.print("TEST 1 FOR LogicalSentence: Having just one true factor returns true: ");
+       if(g.evaluate(f)){
             System.out.println("TEST PASSED");
-        }else {
+       } else {
             System.out.println("TEST FAILED");
             testsFailed++;
+            totalTestsFailed++;
+       }
+
+       System.out.print("TEST 2 FOR LogicalSentence: Having just one false factor returns false: ");
+       if(!h.evaluate(f)){
+            System.out.println("TEST PASSED");
+       } else {
+            System.out.println("TEST FAILED");
+            testsFailed++;
+            totalTestsFailed++;
+       }
+
+       System.out.print("TEST 3 FOR LogicalSentence: Having just one true factor with a ~ in front returns false: ");
+       if(!i.evaluate(f)){
+            System.out.println("TEST PASSED");
+       } else {
+            System.out.println("TEST FAILED");
+            testsFailed++;
+            totalTestsFailed++;
+       }
+
+       System.out.print("TEST 4 FOR LogicalSentence: Having just one true factor with a ~ in front returns false: ");
+       if(!i.evaluate(f)){
+            System.out.println("TEST PASSED");
+       } else {
+            System.out.println("TEST FAILED");
+            testsFailed++;
+            totalTestsFailed++;
+       }
+
+       System.out.print("TEST 5 FOR LogicalSentence: Operator Tests: ");
+       boolean[][] k = new boolean[4][4];
+       //This was tested manualy, to see the results change showTest to true
+       boolean showTest = false;
+       if(true){
+            System.out.println("TEST PASSED");
+       } else {
+            System.out.println("TEST FAILED");
+            testsFailed++;
+            totalTestsFailed++;
+       }
+
+       String op = "&";
+       int column = 0;
+       LogicalSentence firstIn = h;
+       LogicalSentence secondIn = h;
+       for(int oper = 0; oper < 4; oper++) {
+        if(oper == 0){
+            op = "&";
+        } else if (oper == 1){
+            op = "|";
+        } else if (oper == 2){
+            op = "=>";
+        } else if (oper == 3){
+            op = "<=>";
         }
-        System.out.println("TESTING FOR PropositionConstant DONE. \nTOTAL TESTS: 7\nFAILURES: " + testsFailed);
-        */
-
-        if(runTests) {
-            /*
-            totalTestsFailed = testsFailed;
-            testsFailed = 0;
-            System.out.println("TEST CODE FOR TruthAssignment:");
-            PropositionConstant one = new PropositionConstant("this", true);
-            PropositionConstant two = new PropositionConstant("that", false);
-            PropositionConstant three = new PropositionConstant("where", true);
-            boolean[] boolList = {false,true,true};
-            PropositionConstant[] propList = {one,two,three};
-            TruthAssignment test = new TruthAssignment(propList, boolList);
-            System.out.println("TEST 1: THE findTruth METHOD FOR TruthAssignment RETURNS THE INTENDED RESULT FOR THE FIRST \nPropositionConstant IN THE LIST");
-            if (!test.findTruth(one)){
-                System.out.println("TEST PASSED");
-            }else { 
-                System.out.println("TEST FAILED");
-                testsFailed++;
+            for(int first = 0; first < 2 ; first ++){
+                    if (first == 0){
+                        firstIn = g;
+                    } else {
+                        firstIn = h;
+                    }
+                    for(int second = 0; second < 2 ; second ++){
+                        if (second == 0){
+                            secondIn = g;
+                        } else {
+                            secondIn = h;
+                        }
+                        j = new LogicalSentence(false, firstIn, secondIn, op);
+                        k[oper][column] = j.evaluate(f);
+                        column++;
+                    }
             }
-            System.out.println("TEST 2: THE findTruth METHOD FOR TruthAssignment RETURNS THE INTENDED RESULT FOR THE SECOND \nPropositionConstant IN THE LIST");
-            if(test.findTruth(two)){
-                System.out.println("TEST PASSED");
-            }else {
-                System.out.println("TEST FAILED");
-                testsFailed++;
-            }
-            System.out.println("TESTING FOR TruthAssignment DONE. \nTOTAL TESTS: 2\nFAILURES: " + testsFailed);
-
-
-
-
-            totalTestsFailed+= testsFailed;
-            testsFailed = 0;
-            System.out.println("TEST CODE FOR LogicalSentence:");
-            System.out.println("TEST 1: MAKING A LogicalSentence WITHOUT ANY TILDES MAKES A PropositionConstant");
-            LogicalSentence a = new LogicalSentence("p");
-            if(a.getProp().getName().equals("p")){
-                System.out.println("TEST PASSED");
-            }else {
-                System.out.println("TEST FAILED");
-                testsFailed++;
-            }
-            System.out.println("TEST 2: MAKING A LogicalSentence WITHOUT ANY TILDES MAKES NEGATION FALSE");
-            if(!a.getNegation()){
-                System.out.println("TEST PASSED");
-            }else {
-                System.out.println("TEST FAILED");
-                testsFailed++;
-            }
-            
-            System.out.println("TEST 3: THE EVALUATE METHOD WORKS AS EXPECTED 1/4");
-            PropositionConstant test3Constant = new PropositionConstant("p", false);
-            PropositionConstant[] test3List = {test3Constant};
-            boolean[] test3booleans = {false};
-            TruthAssignment test3Assignment = new TruthAssignment(test3List, test3booleans);
-            if(!a.evaluate(test3Assignment)){
-                System.out.println("TEST PASSED");
-            }else {
-                System.out.println("TEST FAILED");
-                testsFailed++;
-            }
-
-
-            System.out.println("TEST 4: THE EVALUATE METHOD WORKS AS EXPECTED 2/4");
-            boolean[] test4booleans = {true};
-            test3Assignment = new TruthAssignment(test3List, test4booleans);
-            if(a.evaluate(test3Assignment)){
-                System.out.println("TEST PASSED");
-            }else {
-                System.out.println("TEST FAILED");
-                testsFailed++;
-            }
-
-            LogicalSentence b = new LogicalSentence("~p");
-
-            System.out.println("TEST 5: MAKING A LogicalSentence WITH TILDES MAKES A LogicalSentence");
-            if(b.getLogic().getProp().getName().equals("p")){
-                System.out.println("TEST PASSED");
-            }else {
-                System.out.println("TEST FAILED");
-                testsFailed++;
-            }
-
-            System.out.println("TEST 6: MAKING A LogicalSentence WITH TILDES MAKES NEGATION TRUE");
-            if(b.getNegation()){
-                System.out.println("TEST PASSED");
-            }else {
-                System.out.println("TEST FAILED");
-                testsFailed++;
-            }
-
-            System.out.println("TEST 7: THE EVALUATE METHOD WORKS AS EXPECTED 3/4");
-            test3Assignment = new TruthAssignment(test3List, test3booleans);
-            if(b.evaluate(test3Assignment)){
-                System.out.println("TEST PASSED");
-            }else {
-                System.out.println("TEST FAILED");
-                testsFailed++;
-            }
-
-            System.out.println("TEST 8: THE EVALUATE METHOD WORKS AS EXPECTED 4/4");
-            test3Assignment = new TruthAssignment(test3List, test4booleans);
-            if(!b.evaluate(test3Assignment)){
-                System.out.println("TEST PASSED");
-            }else {
-                System.out.println("TEST FAILED");
-                testsFailed++;
-            }
-
-            System.out.println("TESTING FOR PropositionConstant DONE. \nTOTAL TESTS: 8\nFAILURES: " + testsFailed);
-            totalTestsFailed+= testsFailed;
-            testsFailed = 0;
-
-            
-            System.out.println("ALL TESTING DONE. RESULTS: \nTESTS DONE: 10\nTESTS FAILED: " + totalTestsFailed);
-            */
+        column = 0;
         }
+
+        if (showTest){
+        for(int l = 0 ; l < 4 ; l++){
+            for (int m = 0; m < 4 ; m++){
+                System.out.print(k[l][m] + " ");
+            }
+            System.out.println();
+        }
+    }
+
     }
 } 

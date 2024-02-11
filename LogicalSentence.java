@@ -54,17 +54,15 @@ public class LogicalSentence {
             }
         } else {
             if (!(logic == null)){
-            baseValue = logic.evaluate(truth);
+                baseValue = logic.evaluate(truth);
             } else {
                 baseValue = truth.findTruth(prop);
             }
+             if (negation){
+                baseValue = !baseValue;
+            }
         }
-        //Applying the operator to the inital value
-        if (negation){
-            return !baseValue;
-        } else {
-            return baseValue;
-        }
+        return baseValue;
     }
 
 
