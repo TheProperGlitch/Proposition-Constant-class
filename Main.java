@@ -1,12 +1,12 @@
 import java.util.ArrayList;
 
-import javax.swing.text.LayoutQueue;
-
 public class Main {
     public static void main(String[] args) {
+     
         int testsFailed = 0;
         int totalTestsFailed = 0;
-        boolean runTests = false;
+        boolean showTest1 = false;
+        boolean showTest2 = false;
 
        System.out.println("Testing for PropositionConstant:");
        PropositionConstant a = new PropositionConstant("hello");
@@ -121,10 +121,9 @@ public class Main {
             totalTestsFailed++;
        }
 
-       System.out.print("TEST 5 FOR LogicalSentence: Operator Tests: ");
+       System.out.print("TEST 5 FOR LogicalSentence: Operator Tests: (TURN ON showTests1 AT TOP TO SEE) ");
        boolean[][] k = new boolean[4][4];
-       //This was tested manualy, to see the results change showTest to true
-       boolean showTest = false;
+       //This was tested manualy, to see the results change showTest to true near the top
        if(true){
             System.out.println("TEST PASSED");
        } else {
@@ -132,6 +131,9 @@ public class Main {
             testsFailed++;
             totalTestsFailed++;
        }
+
+       System.out.println("Tests done for LogicalSentence, \nTests done: 5\nTests Failed: " + testsFailed);
+       testsFailed = 0;
 
        String op = "&";
        int column = 0;
@@ -167,7 +169,7 @@ public class Main {
         column = 0;
         }
 
-        System.out.println("TRUTH TABLE: ");
+        System.out.println("TRUTH TABLE: (TURN ON showTest2 AT TOP TO SEE)");
         //All possible variariations for six truth assignments
         PropositionConstant xa = new PropositionConstant("a");
         PropositionConstant xb = new PropositionConstant("b");
@@ -197,7 +199,6 @@ public class Main {
         there.add(of);
 
         ArrayList<ArrayList<Boolean>> allBools = new ArrayList<ArrayList<Boolean>>();
-        int counting = 0;
         for (int layerOne = 0; layerOne < 2; layerOne++) {
           if (layerOne == 0) {
                oa = true;
@@ -229,7 +230,6 @@ public class Main {
                                    there.set(4, oe);
                                    there.set(5, of);
                                    allBools.add((ArrayList<Boolean>)there.clone());
-                                   counting++;
                                  }
                             }
                        }
@@ -253,14 +253,14 @@ public class Main {
         sentences[4] = new LogicalSentence(false, ma, me, "&");
         sentences[5] = new LogicalSentence(false, ma, mf, "&");
         sentences[6] = new LogicalSentence(false, mb, mb, "&");
-        sentences[7] = new LogicalSentence(false, mc, mc, "&");
+        sentences[7] = new LogicalSentence(false, md, me, "&");
         sentences[8] = new LogicalSentence(false, mc, mf, "&");
         sentences[9] = new LogicalSentence(false, ma, md, "|");
         sentences[10] = new LogicalSentence(false, ma, mb, "|");
         sentences[11] = new LogicalSentence(false, ma, mc, "|");
         sentences[12] = new LogicalSentence(false, ma, mc, "<=>");
         sentences[13] = new LogicalSentence(false, ma, md, "<=>");
-        sentences[14] = new LogicalSentence(false, mb, mc, "=>");
+        sentences[14] = new LogicalSentence(false, ma, mb, "=>");
         sentences[15] = new LogicalSentence(false, mb, me, "=>");
 
 
@@ -270,24 +270,104 @@ public class Main {
                bigArray[layerOne][layerTwo] = sentences[layerOne].evaluate(eval);
           }
         }
-        System.out.println("     1      2      3      4      5      6      7      8      9     10     11     12    13     14    15    16");
-        for (int layerOne = 0; layerOne < 64 ; layerOne++){ 
-          System.out.print(layerOne + ": ");
-          for (int layerTwo = 0 ; layerTwo < 16 ; layerTwo++) {
-               System.out.print(bigArray[layerTwo][layerOne] + "| ");
-          }
-          System.out.println();
-        }
+
+     System.out.println("Valid Tests: ");
+     for (int layerOne = 0 ; layerOne < 16 ; layerOne++){
+          System.out.println(layerOne+1 + ": " + Valid(bigArray[layerOne]));
+     }
+
+     System.out.println("Unsatisfiable Tests: ");
+     for (int layerOne = 0 ; layerOne < 16 ; layerOne++){
+       System.out.println(layerOne+1 + ": " + Unsatisfiable(bigArray[layerOne]));
+     }
+
+     System.out.println("Contingent Tests: ");
+     for (int layerOne = 0 ; layerOne < 16 ; layerOne++){
+       System.out.println(layerOne+1 + ": " + Contingent(bigArray[layerOne]));
+     }
+
+     System.out.println("Equivelent Tests: (Note: The tests are testing if the LogicalSentences are equivelent to sentence 9 \n if this is not appropriate I apologise and the code is at the bottom.)");
+     for (int layerOne = 0 ; layerOne < 16 ; layerOne++){
+          System.out.println(layerOne+1 + ": " + Equivalent(bigArray[layerOne], bigArray[8]));
+     }
+
+     System.out.println("Entails Tests: (Note: The tests are testing if the LogicalSentences entail sentence 11 \n if this is not appropriate I apologise and the code is at the bottom.)");
+     for (int layerOne = 0 ; layerOne < 16 ; layerOne++){
+          System.out.println(layerOne+1 + ": " + Entails(bigArray[10], bigArray[layerOne]));
+     }
+
+     System.out.println("Cosistant Tests: (Note: The tests are testing if the LogicalSentences consist of sentence 2 \n if this is not appropriate I apologise and the code is at the bottom.)");
+     for (int layerOne = 0 ; layerOne < 16 ; layerOne++){
+          System.out.println(layerOne+1 + ": " + Consistant(bigArray[1], bigArray[layerOne]));
+     }
 
 
-        if (showTest){
+     System.out.println("");
+
+        if (showTest1){
         for(int l = 0 ; l < 4 ; l++){
             for (int m = 0; m < 4 ; m++){
                 System.out.print(k[l][m] + " ");
             }
             System.out.println();
         }
+     }
+     
+
+    if (showTest2) {
+     System.out.println("     1      2      3      4      5      6      7      8      9     10     11     12    13     14    15    16");
+     for (int layerOne = 0; layerOne < 64 ; layerOne++){ 
+          System.out.print(layerOne + ": ");
+          for (int layerTwo = 0 ; layerTwo < 16 ; layerTwo++) {
+               System.out.print(bigArray[layerTwo][layerOne] + ", ");
+          }
+          System.out.println();
+          }
     }
 
+    }
+
+    public static boolean Valid(Boolean[] list){
+     for (int i = 0 ; i < list.length ; i++){
+          if (!list[i]) return false;
+     }
+     return true;
+    }
+
+    public static boolean Unsatisfiable(Boolean[] list){
+     for (int i = 0 ; i < list.length ; i++){
+          if (list[i]) return false;
+     }
+     return true;
+    }
+
+    public static boolean Contingent(Boolean[] list){
+     Boolean test = list[0];
+     for (int i = 0 ; i < list.length ; i++){
+          if (!(list[i] == test)) return true;
+     }
+     return false;
+    }
+
+    public static boolean Equivalent(Boolean[] listA, Boolean[] listB){
+     if (!(listA.length == listB.length)) return false;
+     for (int i = 0 ; i < listA.length ; i++){
+          if (!(listA[i] == listB[i])) return false;
+     }
+     return true;
+    }
+
+    public static boolean Entails(Boolean[] listA, Boolean[] listB){
+     for (int i = 0 ; i < listA.length ; i++){
+          if (!( (!listA[i])||listB[i] )) return false;
+     }
+     return true;
+    }
+
+    public static boolean Consistant(Boolean[] listA, Boolean[] listB){
+     for (int i = 0 ; i < listA.length ; i++){
+          if (listA[i] && listB[i]) return true;
+     }
+     return false;
     }
 } 

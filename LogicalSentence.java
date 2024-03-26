@@ -65,6 +65,9 @@ public class LogicalSentence {
         return baseValue;
     }
 
+    //Methods for properties and relationships
+
+
 
     //These methods are just to make testing easy
     PropositionConstant getProp(){
